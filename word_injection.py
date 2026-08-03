@@ -2,82 +2,58 @@
 def leftRow(puzzle, n, k):
     rst = 0
     for row in puzzle:
+        cnt_lst = []
         cnt = 0
-        for col in range(0, n):
-
-            if row[col] == 1:
-                cnt += 1
-            else:
-                break
-            
-                    
-        if cnt == k:
-            rst += 1
-            
-    if n == k:
-        rst = rst/2
+        flag = True
+        while flag:
+            for col in range(0, n):
+                if col != n-1:
+                    if row[col] == 1:
+                        cnt += 1
+                    else:
+                        cnt_lst.append(cnt)
+                        cnt = 0
+                else:
+                    flag = False
+                    if row[col] == 1:
+                        cnt += 1
+                        cnt_lst.append(cnt)
+                    else:
+                        cnt_lst.append(cnt)
+                        break
+                        
+        rst += cnt_lst.count(k)
         
     return rst
 
-# 우측 > 좌측
-def righttRow(puzzle, n, k):
-    rst = 0
-    for row in puzzle:
-        
-        cnt = 0
-        for col in range(n-1, -1, -1):
-            
-            if row[col] == 1:
-                cnt += 1
-            else:
-                break
-            
-        if cnt == k:
-            rst += 1
-            
-    if n == k:
-        rst = rst/2
-            
-    return rst
 
 def upCol(puzzle, n, k):
     rst = 0
-    for col in range(0, n):
-        
+    for col in range(0,n):
+        cnt_lst = []
         cnt = 0
-        for row in range(n-1, -1, -1):
-            if puzzle[row][col] == 1:
-                cnt += 1
-            else:
-                break
-            
-        if cnt == k:
-            rst += 1
-            
-            
-    if n == k:
-        rst = rst/2
+        flag = True
+        while flag:
+            for row in range(0, n):
+                if row != n-1:
+                    if puzzle[row][col] == 1:
+                        cnt += 1
+                    else:
+                        cnt_lst.append(cnt)
+                        cnt = 0
+                else:
+                    flag = False
                     
-    return rst
-
-def downCol(puzzle, n, k):
-    rst = 0
-    for col in range(0, n):
+                    if puzzle[row][col] == 1:
+                        cnt += 1
+                        cnt_lst.append(cnt)
+                        
+                    else:
+                        cnt_lst.append(cnt)
+                        break
+                        
+        rst += cnt_lst.count(k)
         
-        cnt = 0
-        for row in range(0,n):
-            if puzzle[row][col] == 1:
-                cnt += 1
-            else:
-                break
-            
-        if cnt == k:
-            rst += 1
-            
-            
-    if n == k:
-        rst = rst/2
-                    
     return rst
 
 
@@ -92,9 +68,9 @@ for test_case in range(0, T):
         puzzle.append(list(map(int, input().split())))
 
     
-    rst_box.append([test_case+1, leftRow(puzzle, n, k)+righttRow(puzzle,n,k)+upCol(puzzle,n,k)+downCol(puzzle,n,k)])
+    rst_box.append([test_case+1, leftRow(puzzle, n, k)+upCol(puzzle,n,k)])
     
     
 for test_case in range(0,T):
-    print(f"{rst_box[test_case][0]}: {rst_box[test_case][1]}")
+    print(f"#{rst_box[test_case][0]} {rst_box[test_case][1]}")
     
