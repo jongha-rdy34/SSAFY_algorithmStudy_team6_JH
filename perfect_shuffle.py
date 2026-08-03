@@ -19,7 +19,7 @@ for test_case in range(0,T):
                 rst_str += half1[i] + ' ' + half2[i]
                        
     else:
-        mid = int(card_num+1/2)
+        mid = int((card_num+1)/2)
         half1 = [card_lst[x] for x in range(0, mid)]
         half2 = [card_lst[x] for x in range(mid, card_num)]
         # half1 is longer than half2
