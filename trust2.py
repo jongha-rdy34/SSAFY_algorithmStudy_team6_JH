@@ -1,5 +1,4 @@
 from collections import deque
-import queue
 
 T = int(input())
 
@@ -23,53 +22,76 @@ for t in range(T):
     
     o_loc = 1
     b_loc = 1
-    o_time = 0
-    b_time = 0
+    time = 0
     o_on_btn = False
     b_on_btn = False
     
     for i in range(len(button_lst)//2):
-        robot = button_lst.popleft()
-        loc = button_lst.popleft()
+        # 움직일 대상 물색
+        moving_robot = button_lst.popleft()
+        moving_loc = button_lst.popleft()
         
-        if robot == 'O':
-            o_time += (loc - o_loc)
+        # target이 움직이는 동안, 남은 놈 움직일 수 있는 지 확인
+        if moving_robot == 'O':
+            time_delta = abs(moving_loc - o_loc)
+            time += time_delta
             o_on_btn = True
+
             
+            # B가 움직여야하는 지 확인
             if 'B' in button_dict.keys():
-                b_move = button_dict['B'][0]
-                
-        else:
-            b_time += (loc - b_loc)
+                if len(button_dict['B']) != 0:
+                    b_btn_loc = button_dict['B'][0]
+                    
+                    # B가 움직이는 시간이 O 이동시간 보다 길 경우
+                    if abs(b_btn_loc - b_loc) > time_delta+1:
+                        if (b_btn_loc - b_loc) > 0:
+                            b_loc += (time_delta+1)
+                            
+                        else:
+                            b_loc -= (time_delta+1)
+                            
+                    else:
+                        b_loc = b_btn_loc
+                        b_on_btn = True
+                        
+            o_loc = moving_loc
+                    
+        elif moving_robot == 'B':
+            time_delta = abs(moving_loc - b_loc)
+            time += time_delta
             b_on_btn = True
             
-            
-        if (b_time == o_time):
-        # 같은 시간에 둘 다 버튼 위에 올라간 경우
-            if o_on_btn and b_on_btn: 
-                if max_robot == 'O':
-                    o_time += 1
-                    o_on_btn = False
-                    b_time += 1
+            # O가 움직여야하는 지 확인
+            if 'O' in button_dict.keys():
+                if len(button_dict['O']) != 0:
+                    o_btn_loc = button_dict['O'][0]
                     
-                else:
-                    o_time += 1
-                    b_on_btn = False
-                    b_time += 1
-                
+                    # O가 움직이는 시간이 B 이동시간 보다 길 경우
+                    if abs(o_btn_loc - o_loc) > time_delta+1:
+                        if (o_btn_loc - o_loc) > 0:
+                            o_loc += (time_delta+1)
+                            
+                        else:
+                            o_loc -= (time_delta+1)
                         
-            elif o_on_btn and not b_on_btn:
-                
-    
-    
-    
+                        
+                        
+                    else:
+                        o_loc = o_btn_loc
+                        o_on_btn = True                    
+                    
+            b_loc = moving_loc
             
-    time = 0
-
-
+        # 버튼 누르기
+        if moving_robot == 'O':
+            o_on_btn = False
+            time += 1
+            button_dict['O'].popleft()
+            
+        elif moving_robot == 'B':
+            b_on_btn = False
+            time += 1
+            button_dict['B'].popleft()
     
-
-    if o_time >= b_time:
-        print(f'#{t+1} {o_time}')
-    else:
-        print(f'#{t+1} {b_time}')
+    print(f'#{t+1} {time}')

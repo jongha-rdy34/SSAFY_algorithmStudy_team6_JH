@@ -30,6 +30,8 @@ for t in range(T):
     o_work = button_dict['O']
     b_work = button_dict['B']
     
+    
+    
     if o >= b:
         for i in range(o):
             if len(b_work) == 0:
