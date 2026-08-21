@@ -55,8 +55,8 @@ def change_matrix(row, col, d, n, matrix, to_change):
     new_col = col + move_col[d]
     while 0 <= new_row < n and 0 <= new_col < n:
         matrix[new_row][new_col] = to_change
-        new_row += 1
-        new_col += 1
+        new_row += move_row[d]
+        new_col += move_col[d]
 
 
 
@@ -71,7 +71,7 @@ for t in range(T):
         row = list(map(int, input().split()))
 
         for num in range(n):
-            if row[num] == 1 and num != 0 and num != n-1:
+            if row[num] == 1 and 0 < num < n-1 and 0 < i < n-1:
                 core_num += 1
                 core_idx = [i, num]
                 core_idx_lst.append(core_idx)
